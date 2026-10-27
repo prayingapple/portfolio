@@ -25,12 +25,12 @@ body:has(dialog[open]) {
         transition: all 0.5s allow-discrete;
         background: rgb(0, 0, 0 / 0.2);
         opacity: 0;
+    }
         
-        &[open] {
-            opacity: 1;
-            @starting-style {
-                opacity: 0;
-            }
+    &[open] {
+        opacity: 1;
+        @starting-style {
+            opacity: 0;
         }
     }
 }
