@@ -23,7 +23,7 @@ body:has(dialog[open]) {
 
     &::backdrop {
         transition: all 0.5s allow-discrete;
-        background: rgb(0, 0, 0 / 0.2);
+        background: rgb(0 0 0 / 0.2);
         opacity: 0;
     }
         
