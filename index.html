@@ -8,18 +8,13 @@
 	<link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-	<dialog id="modalMenu" closedby="any">
-		<h2>メニュー</h2>
-		<p>メニューの内容</p>
-		<button command="close" commandfor="modalMenu">閉じる</button>
-	</dialog>
-
 	<header id="header">
 		<div id="header-container">
 			<div class="header-logo">
 				TKロゴ
 			</div>
-			<button command="show-modal" commandfor="modalMenu">メニューを開く</button>
+			<!-- Hamburger menu button -->
+			<button id="menu-open" class="button-icon button-menu" title="Menu" command="show-modal" commandfor="modalMenu"></button>
 		</div>
 	</header>
 
@@ -31,5 +26,18 @@
 			<p>コンテンツの内容</p>
 		</div>
 	</div>
+
+	<!-- Drawer hamburger menu panel -->
+    <dialog id="modalMenu" class="menu-dialog menu-drawer" closedby="any">
+      <header class="menu-header">
+        <button id="button-close" class="button-icon button-close" title="Close" comand="close" comandfor="modalMenu"></button>
+      </header>
+
+      <nav class="menu-list">
+        <a href="#">Work</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+      </nav>
+    </dialog>
 </body>
 </html>

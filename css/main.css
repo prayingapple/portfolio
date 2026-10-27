@@ -1,8 +1,52 @@
 @charset "UTF-8";
 
-body:has(dialog[open]) {
-  /* 背景ページのスクロールを止める */
-  overflow: hidden;
+/* Base settings and shared tokens */
+
+:root {
+  --bg: #eee;
+  --surface: #fff;
+  --text: #222;
+  --line: #ddd;
+  --site-header-height: 80px;
+  --backdrop: rgb(32 32 32 / 30%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@media (width > 720px) {
+  /* メニュー表示前後のスクロールバー幅確保 */
+  /* Scrollbar gutter for menu open-close */
+  html {
+    scrollbar-gutter: stable;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: sans-serif;
+}
+
+a,
+button,
+label,
+summary {
+  touch-action: manipulation;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 #modalMenu {
@@ -14,14 +58,11 @@ body:has(dialog[open]) {
 
     /* 初期状態 */
     opacity: 0;
-    scale: 0.8;
     
     &[open] {
         opacity: 1;
-        scale: 1;
         @starting-style {
             opacity: 0;
-            scale: 0.8;
         }
     }
 
@@ -68,4 +109,270 @@ body:has(dialog[open]) {
 
 #content {
     margin-top: 6rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 6rem;
+}
+
+.button-icon {
+  position: relative;
+  display: grid;
+  flex: 0 0 48px;
+  place-items: center;
+  inline-size: 48px;
+  block-size: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.5s;
+
+  @media (any-hover: hover) {
+    &:hover {
+      background-color: var(--bg);
+    }
+  }
+
+  /* 文字なしボタンの疑似要素アイコン */
+  /* Pseudo-element icon for textless buttons */
+  &::before,
+  &::after {
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    border-radius: 20px;
+    background: currentColor;
+    content: "";
+  }
+}
+
+.button-menu {
+  /* ::before本体とbox-shadowによる三本線 */
+  /* Three lines from ::before and box-shadow */
+  &::before {
+    width: 24px;
+    height: 2px;
+    border-radius: 20px;
+    background: currentColor;
+    box-shadow:
+      0 -6px 0 currentColor,
+      0 6px 0 currentColor;
+  }
+
+  &::after {
+    /* 三本線では不要な二本目疑似要素 */
+    /* Unused second pseudo-element for the three-line icon */
+    content: none;
+  }
+}
+
+.button-close {
+  transition:
+    background-color 0.5s,
+    rotate 0.2s ease;
+
+  @media (any-hover: hover) {
+    &:hover {
+      rotate: 90deg;
+    }
+  }
+
+  /* ::beforeと::afterの交差による×印 */
+  /* X mark from crossed ::before and ::after */
+  &::before {
+    rotate: 45deg;
+  }
+
+  &::after {
+    rotate: -45deg;
+  }
+}
+
+/* Drawer menu */
+.menu-drawer {
+  /* ドロワー用スプリング曲線 */
+  /* Drawer spring curve */
+  --spring: linear(0, 0.0107, 0.0398, 0.0834, 0.138, 0.2003, 0.2677, 0.3379, 0.4089, 0.4791, 0.5471, 0.612, 0.6731, 0.7297, 0.7815, 0.8283, 0.87, 0.9068, 0.9388, 0.9662, 0.9892, 1.0083, 1.0237, 1.0357, 1.0449, 1.0514, 1.0556, 1.058, 1.0587, 1.0581, 1.0563, 1.0538, 1.0506, 1.0469, 1.043, 1.0388, 1.0347, 1.0306, 1.0266, 1.0228, 1.0192, 1.0159, 1.0128, 1.0101, 1.0076, 1.0055, 1.0036, 1.002, 1.0006, 0.9995, 0.9986, 0.9979, 0.9974, 0.997, 0.9967, 0.9966, 0.9966, 0.9966, 0.9967, 0.9968, 0.997, 0.9972, 0.9975, 0.9977, 0.998, 0.9982, 0.9984, 0.9987, 0.9989, 0.9991, 0.9992, 0.9994, 0.9996, 0.9997, 0.9998, 0.9999, 1, 1, 1.0001, 1.0001, 1.0002, 1.0002, 1.0002, 1.0002, 1.0002, 1.0002, 1.0002, 1.0002, 1.0002, 1.0002, 1.0001, 1.0001, 1.0001, 1.0001, 1.0001, 1.0001, 1.0001, 1.0001, 1, 1, 1);
+
+  inset: 0 0 0 auto;
+  grid-template-rows: auto 1fr;
+  align-content: start;
+  gap: 16px;
+  width: 440px;
+  inline-size: 440px;
+  height: 100dvh;
+  block-size: 100dvh;
+  overflow: visible;
+  padding: 16px;
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+  translate: 640px 0;
+  transition:
+    translate 1s var(--spring),
+    display 1s allow-discrete,
+    overlay 1s allow-discrete;
+
+  &::backdrop {
+    background: var(--backdrop);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  /* スプリング時の右端の白い受け */
+  /* Right-side surface for spring overshoot */
+  &::after {
+    position: absolute;
+    inset-block: 0;
+    right: -128px;
+    inline-size: 128px;
+    background: var(--surface);
+    content: "";
+    pointer-events: none;
+  }
+
+  .menu-header {
+    justify-content: flex-end;
+  }
+
+  .menu-list {
+    align-content: start;
+  }
+
+  @media (width <= 568px) {
+    inset-inline-start: 64px;
+    width: auto;
+    inline-size: auto;
+  }
+
+  &[open] {
+    --menu-interaction-delay: 1s;
+
+    display: grid;
+    translate: 0 0;
+
+    @starting-style {
+      translate: 640px 0;
+    }
+
+    &::backdrop {
+      opacity: 1;
+
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+/* Shared dialog and menu parts */
+
+body:has(dialog[open]) {
+  /* ダイアログ表示時の背景スクロール停止 */
+  /* Background scroll lock while dialog is open */
+  overflow: hidden;
+}
+
+.menu-dialog {
+  --menu-interaction-delay: 0s;
+
+  position: fixed;
+  /* [open]外のレイアウト指定 */
+  /* Layout outside [open] */
+  display: grid;
+  gap: 16px;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 16px 24px;
+  border: 0;
+  background: var(--surface);
+  interactivity: inert;
+  pointer-events: none;
+  transition:
+    opacity 0.5s,
+    translate 0.5s ease,
+    display 0.5s allow-discrete,
+    overlay 0.5s allow-discrete,
+    interactivity 0s var(--menu-interaction-delay) allow-discrete,
+    pointer-events 0s var(--menu-interaction-delay) allow-discrete;
+  transition-behavior: allow-discrete;
+
+  &:not([open]):not(:popover-open) {
+    display: none;
+  }
+
+  &::backdrop {
+    background: var(--backdrop);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  &[open],
+  &:popover-open {
+    --menu-interaction-delay: 0.5s;
+
+    interactivity: auto;
+    opacity: 1;
+    pointer-events: auto;
+    translate: 0 0;
+
+    &::backdrop {
+      opacity: 1;
+    }
+
+    @starting-style {
+      interactivity: inert;
+      opacity: 0;
+      pointer-events: none;
+
+      &::backdrop {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu-list {
+  /* リスト側スクロール */
+  /* List-owned scrolling */
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-height: 0;
+  overflow-y: auto;
+  /* スクロール連鎖の内側管理 */
+  /* Inner scroll containment */
+  overscroll-behavior-y: contain;
+
+  a,
+  summary {
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  > a,
+  summary {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding-inline: 16px;
+    border-radius: 8px;
+    transition: background-color 0.5s;
+
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: var(--bg);
+      }
+    }
+  }
+}
+
+.menu-meta {
+  margin: 0;
 }
