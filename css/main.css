@@ -1,9 +1,14 @@
 @charset "UTF-8";
 
+body:has(dialog[open]) {
+  /* 背景ページのスクロールを止める */
+  overflow: hidden;
+}
+
 .my-dialog {
     opacity: 0;
     scale: 0.9;
-    transition: 3.5s allow-discreate;
+    transition: 0.5s allow-discreate;
     &[open] {
         opacity: 1;
         scale: 1;
