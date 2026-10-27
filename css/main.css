@@ -8,13 +8,13 @@ body:has(dialog[open]) {
 .my-dialog {
     opacity: 0;
     scale: 0.9;
-    transition: 0.5s allow-discreate;
+    transition: all 1s allow-discrete;
     &[open] {
         opacity: 1;
         scale: 1;
         @starting-style {
             opacity: 0;
-            scale: 0.9;
+            scale: 0.5;
         }
     }
 }
