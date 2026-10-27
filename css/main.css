@@ -6,13 +6,28 @@ body:has(dialog[open]) {
 }
 
 #modalMenu {
-    transition: all 1s allow-discrete;
+    transition: all 0.5s allow-discrete;
+
+    /* 初期状態 */
+    opacity: 0;
+    scale: 0.8;
+    
     &[open] {
         opacity: 1;
         scale: 1;
         @starting-style {
             opacity: 0;
-            scale: 0.5;
+            scale: 0.8;
+        }
+    }
+
+    &::backdrop {
+        transition: all 0.5s allow-discrete;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        
+        &[open] {
+            opacity: 1;
         }
     }
 }
