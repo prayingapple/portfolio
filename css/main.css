@@ -6,8 +6,6 @@ body:has(dialog[open]) {
 }
 
 .my-dialog {
-    opacity: 0;
-    scale: 0.9;
     transition: all 1s allow-discrete;
     &[open] {
         opacity: 1;
